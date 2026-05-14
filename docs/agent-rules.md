@@ -1,6 +1,6 @@
 # Agent Rules
 
-These rules apply to the whole Spoons repository. Each Spoon folder can add more specific guidance in its own `AGENTS.md`.
+These rules apply to the whole Spoons repository. Each Spoon or standalone helper folder can add more specific guidance in its own `AGENTS.md`.
 
 ## Repository Structure
 
@@ -27,10 +27,12 @@ taskbar/
     ...
 ```
 
+Standalone helper folders may omit a `.spoon` directory when they contain plain Hammerspoon bootstrap configuration rather than reusable Spoon behavior. They should still include `README.md`, `AGENTS.md`, and `init/<folder>.lua`.
+
 ## Init Scripts
 
-- At the base of every Spoon folder, include an `init/` directory when that Spoon has a default Hammerspoon bootstrap module.
-- The bootstrap script must be named after the Spoon folder, using the exact folder name plus `.lua`.
+- At the base of every Spoon or standalone helper folder, include an `init/` directory when that folder has a default Hammerspoon bootstrap module.
+- The bootstrap script must be named after the folder, using the exact folder name plus `.lua`.
 - For example, `taskbar/init/taskbar.lua` is copied by `install.sh` into `~/.hammerspoon/apps/taskbar.lua`.
 - The bootstrap script is intended to be copied exactly into `~/.hammerspoon/apps/`.
 - Do not put these bootstrap scripts inside the `.spoon` directory.
@@ -43,7 +45,7 @@ taskbar/
 ## Install Script Expectations
 
 - `install.sh` must link every `.spoon` directory into `~/.hammerspoon/Spoons/`.
-- `install.sh` must copy each valid `init/<folder>.lua` file into `~/.hammerspoon/apps/`, overwriting older copies so default configs stay current.
+- `install.sh` must copy each valid `init/<folder>.lua` file into `~/.hammerspoon/apps/`, including standalone helper folders, overwriting older copies so default configs stay current.
 - `install.sh` must create `~/.hammerspoon/apps/` when it does not exist.
 - `install.sh` must create `~/.hammerspoon/init.lua` only when it does not exist, using the repository-standard loader for files in `~/.hammerspoon/apps/`.
 

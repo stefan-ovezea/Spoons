@@ -38,9 +38,6 @@ apps_found=0
 
 while IFS= read -r -d '' spoon_path; do
     spoon_name="$(basename "$spoon_path")"
-    app_dir="$(dirname "$spoon_path")"
-    app_name="$(basename "$app_dir")"
-    app_init="${app_dir}/init/${app_name}.lua"
     target="${SPOONS_DIR}/${spoon_name}"
 
     if [[ -L "$target" ]]; then
@@ -55,13 +52,22 @@ while IFS= read -r -d '' spoon_path; do
     fi
 
     (( found++ )) || true
-
-    if [[ -f "$app_init" ]]; then
-        cp "$app_init" "${APPS_DIR}/${app_name}.lua"
-        echo "copied:   ${APPS_DIR}/${app_name}.lua"
-        (( apps_found++ )) || true
-    fi
 done < <(find "$REPO_ROOT" -type d -name '*.spoon' -print0)
+
+while IFS= read -r -d '' app_init; do
+    app_dir="$(dirname "$(dirname "$app_init")")"
+    app_name="$(basename "$app_dir")"
+    app_file="$(basename "$app_init")"
+    target="${APPS_DIR}/${app_name}.lua"
+
+    if [[ "$app_file" != "${app_name}.lua" ]]; then
+        continue
+    fi
+
+    cp "$app_init" "$target"
+    echo "copied:   $target"
+    (( apps_found++ )) || true
+done < <(find "$REPO_ROOT" -path '*/init/*.lua' -type f -print0)
 
 if [[ $found -eq 0 ]]; then
     echo "no .spoon directories found under $REPO_ROOT"

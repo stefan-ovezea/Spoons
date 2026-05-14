@@ -1,6 +1,9 @@
 local M = {}
 
-local log = hs.logger.new("reload", "info")
+local log = hs.logger.new("hotkeys", "info")
+
+local reloadModifiers = { "cmd", "shift", "ctrl" }
+local reloadKey = "R"
 
 function M.reloadConfig()
     log.i("Reloading Hammerspoon config...")
@@ -8,11 +11,7 @@ function M.reloadConfig()
 end
 
 function M.start()
-    hs.hotkey.bind(
-        { "cmd", "shift", "ctrl" },
-        "R",
-        M.reloadConfig
-    )
+    hs.hotkey.bind(reloadModifiers, reloadKey, M.reloadConfig)
 
     log.i("Reload hotkey registered: cmd+shift+ctrl+R")
 end

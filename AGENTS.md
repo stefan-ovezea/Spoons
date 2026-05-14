@@ -19,3 +19,8 @@ This repository contains Hammerspoon Spoons and supporting setup files for makin
 ## Current Spoons
 
 - `taskbar/` contains `Taskbar.spoon`, a lightweight macOS taskbar replacement.
+- `switcher/` contains `WindowSwitcher.spoon`, a Windows-style individual window switcher.
+
+## Extra Hammerspoon Config
+
+- `hotkeys/` contains standalone personal global hotkey bindings.
