@@ -6,6 +6,8 @@
 local config = {
     barHeight = 34,
     iconSize = 20,
+    hoverIconGrowth = 3,
+    hoverIconLift = 1,
     padding = 8,
     itemSpacing = 6,
     placement = "bottom",
@@ -40,6 +42,11 @@ local config = {
     attentionDotSize = 12,
     attentionCounter = true,
     attentionCounterMax = 99,
+    runningIndicatorWidth = 14,
+    runningIndicatorHeight = 3,
+    runningIndicatorRadius = 1.5,
+    runningIndicatorDotSize = 4,
+    runningIndicatorBottom = 3,
     debugNotificationBadge = false,
     debugNotificationBadgeCount = 3,
     debugNotificationBadgeName = "Badge Test",
@@ -55,9 +62,6 @@ local config = {
 
     colors = {
         background = { red = 0.05, green = 0.05, blue = 0.06, alpha = 0.82 },
-        item = { red = 0.12, green = 0.12, blue = 0.14, alpha = 0.0 },
-        itemHover = { red = 0.24, green = 0.24, blue = 0.28, alpha = 0.62 },
-        itemActive = { red = 0.20, green = 0.34, blue = 0.55, alpha = 0.72 },
         separator = { red = 0.52, green = 0.52, blue = 0.56, alpha = 0.55 },
         clockText = { red = 0.86, green = 0.86, blue = 0.88, alpha = 1.0 },
         trash = { red = 0.76, green = 0.78, blue = 0.82, alpha = 1.0 },
@@ -65,6 +69,7 @@ local config = {
         trashFill = { red = 0.38, green = 0.58, blue = 0.96, alpha = 0.80 },
         attention = { red = 0.92, green = 0.08, blue = 0.10, alpha = 1.0 },
         attentionText = { red = 1.0, green = 1.0, blue = 1.0, alpha = 1.0 },
+        runningIndicator = { red = 0.86, green = 0.88, blue = 0.92, alpha = 0.95 },
     },
 
     excludedApps = {

@@ -124,12 +124,19 @@ function M.orderedApps(state)
     local used = {}
 
     for _, key in ipairs(state.pinnedAppKeys or {}) do
+        local matched = false
+
         for _, app in ipairs(state.apps or {}) do
             if not app.isDebug and not used[app.key] and appMatches(app, key) then
                 table.insert(pinned, app)
                 used[app.key] = true
+                matched = true
                 break
             end
+        end
+
+        if not matched then
+            table.insert(pinned, state.appsModule.pinnedRecord(key))
         end
     end
 

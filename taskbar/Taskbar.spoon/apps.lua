@@ -62,6 +62,15 @@ local function iconFor(app)
     return nil
 end
 
+local function callApplication(method, ...)
+    local fn = hs.application[method]
+    if type(fn) ~= "function" then return nil end
+
+    local ok, value = pcall(fn, ...)
+    if ok then return value end
+    return nil
+end
+
 local function appRecord(app)
     local key = appKey(app)
     if not key then return nil end
@@ -76,7 +85,27 @@ local function appRecord(app)
         path = call(app, "path"),
         app = app,
         icon = iconFor(app),
+        isRunning = true,
         isFrontmost = call(app, "isFrontmost") == true,
+    }
+end
+
+function M.pinnedRecord(key)
+    local bundleID = key:match("^pid:") and nil or key
+    local name = bundleID and callApplication("nameForBundleID", bundleID) or nil
+    local path = bundleID and callApplication("pathForBundleID", bundleID) or nil
+
+    return {
+        key = key,
+        name = name or key,
+        bundleID = bundleID,
+        pid = nil,
+        path = path,
+        app = nil,
+        icon = bundleID and hs.image.imageFromAppBundle(bundleID) or nil,
+        isRunning = false,
+        isFrontmost = false,
+        isPinnedPlaceholder = true,
     }
 end
 
@@ -115,6 +144,7 @@ local function appendDebugApp(state, records)
         path = nil,
         app = nil,
         icon = debugIcon(),
+        isRunning = true,
         isFrontmost = false,
         isDebug = true,
     })
@@ -157,18 +187,47 @@ function M.updateFrontmost(state)
     end
 end
 
---- Focuses the app represented by key and brings all of its windows forward.
-function M.activate(state, key)
+local function launchOrFocus(record)
+    if record.bundleID and hs.application.launchOrFocusByBundleID then
+        local ok = callApplication("launchOrFocusByBundleID", record.bundleID)
+        if ok then return true end
+    end
+
+    if record.name then
+        local ok = callApplication("launchOrFocus", record.name)
+        if ok then return true end
+    end
+
+    if record.path then
+        local ok = callApplication("launchOrFocus", record.path)
+        if ok then return true end
+    end
+
+    return false
+end
+
+--- Launches or focuses the app represented by key.
+function M.launchOrFocus(state, key)
     for _, record in ipairs(state.apps) do
         if record.key == key then
             if record.isDebug then return false end
-            state.logger.df("activating %s", record.name)
-            return record.app:activate(true)
+            state.logger.df("focusing %s", record.name)
+            if record.app then
+                if record.app.unhide then
+                    pcall(function() record.app:unhide() end)
+                end
+                pcall(function() record.app:activate(true) end)
+            end
+
+            return launchOrFocus(record)
         end
     end
 
-    state.logger.wf("cannot activate unknown app key: %s", tostring(key))
-    return false
+    local record = M.pinnedRecord(key)
+    state.logger.df("launching or focusing %s", record.name)
+    return launchOrFocus(record)
 end
+
+M.activate = M.launchOrFocus
 
 return M

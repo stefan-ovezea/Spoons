@@ -47,8 +47,10 @@ end
 local function activateApp(state, app)
     if not app or app.isDebug then return end
 
-    state.appsModule.activate(state, app.key)
-    state.attention.clearForApp(state, app.app)
+    state.appsModule.launchOrFocus(state, app.key)
+    if app.app then
+        state.attention.clearForApp(state, app.app)
+    end
     state.appsModule.updateFrontmost(state)
     state.drawing.render(state, state.screenList)
 end
@@ -102,7 +104,7 @@ local function startDragCandidate(state, point)
         return true
     end
 
-    local app = appForKey(state, region.key)
+    local app = region.app or appForKey(state, region.key)
     if not app or app.isDebug then return false end
 
     state.dragCandidate = {

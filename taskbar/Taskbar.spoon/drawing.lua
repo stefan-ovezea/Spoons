@@ -89,30 +89,54 @@ local function appendAttentionDot(elements, state, app, cfg, iconX, iconY, iconS
     end
 end
 
+local function appendRunningIndicator(elements, app, cfg, x, width, index)
+    if not app.isRunning then return end
+
+    if not app.isFrontmost then
+        local size = cfg.runningIndicatorDotSize
+        table.insert(elements, {
+            id = "app-running-" .. tostring(index),
+            type = "oval",
+            action = "fill",
+            frame = {
+                x = x + math.floor((width - size) / 2),
+                y = cfg.barHeight - cfg.runningIndicatorBottom - size,
+                w = size,
+                h = size,
+            },
+            fillColor = cfg.colors.runningIndicator,
+        })
+        return
+    end
+
+    local indicatorWidth = cfg.runningIndicatorWidth
+    local indicatorHeight = cfg.runningIndicatorHeight
+    table.insert(elements, {
+        id = "app-running-" .. tostring(index),
+        type = "rectangle",
+        action = "fill",
+        frame = {
+            x = x + math.floor((width - indicatorWidth) / 2),
+            y = cfg.barHeight - cfg.runningIndicatorBottom - indicatorHeight,
+            w = indicatorWidth,
+            h = indicatorHeight,
+        },
+        roundedRectRadii = {
+            xRadius = cfg.runningIndicatorRadius,
+            yRadius = cfg.runningIndicatorRadius,
+        },
+        fillColor = cfg.colors.runningIndicator,
+    })
+end
+
 local function appElements(state, app, cfg, x, index)
     local height = cfg.barHeight
     local width = itemWidth(cfg)
     local hovered = state.hoveredAppKey == app.key
-    local iconSize = hovered and cfg.iconSize + 4 or cfg.iconSize
+    local iconSize = hovered and cfg.iconSize + cfg.hoverIconGrowth or cfg.iconSize
     local iconX = x + math.floor((width - iconSize) / 2)
-    local iconY = math.floor((height - iconSize) / 2) - (hovered and 1 or 0)
-    local fillColor = cfg.colors.item
-
-    if app.isFrontmost then
-        fillColor = cfg.colors.itemActive
-    elseif hovered then
-        fillColor = cfg.colors.itemHover
-    end
-
-    local elements = {
-        {
-            id = "app-bg-" .. tostring(index),
-            type = "rectangle",
-            action = "fill",
-            frame = { x = x, y = 4, w = width, h = height - 8 },
-            fillColor = fillColor,
-        },
-    }
+    local iconY = math.floor((height - iconSize) / 2) - (hovered and cfg.hoverIconLift or 0)
+    local elements = {}
 
     if app.icon then
         table.insert(elements, {
@@ -128,6 +152,7 @@ local function appElements(state, app, cfg, x, index)
         })
     end
 
+    appendRunningIndicator(elements, app, cfg, x, width, index)
     appendAttentionDot(elements, state, app, cfg, iconX, iconY, iconSize, index)
 
     return elements, width
@@ -145,6 +170,7 @@ local function appendApp(elements, state, screenBar, app, targetX, index, pinned
 
     table.insert(screenBar.regions, {
         key = app.key,
+        app = app,
         pinned = pinned,
         index = index,
         x = x,

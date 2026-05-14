@@ -4,7 +4,7 @@
 
 - One visible bar per monitor.
 - Running applications displayed as icons.
-- Click-to-focus using `hs.application:activate(true)`.
+- Launch-or-focus app clicks, including hidden running apps and pinned apps that are not running yet.
 - Automatic updates for launched, terminated, and activated apps.
 - Dynamic rebuild when displays change.
 
@@ -16,8 +16,8 @@
 - App pinning and drag reorder.
 - Right-click context menus for apps and Trash.
 - Right-side clock and Trash widget.
+- Rounded running-app indicator bars.
 - Optional app labels or tooltips.
-- Optional active-app indicator style.
 - More precise filtering for menu-bar-only and helper apps.
 
 ## Milestone 3: Configuration Polish

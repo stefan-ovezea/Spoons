@@ -67,6 +67,14 @@ Known limitations:
 - Made Trash fullness detection check standard filesystem Trash locations and the Dock accessibility label.
 - Added `spoon.Taskbar:debugTrashState()` for troubleshooting Trash detection.
 
+## 2026-05-14
+
+- Added bottom running indicators so pinned apps show whether they are currently open.
+- Changed app clicks to use launch-or-focus behavior, including an unhide step for hidden running apps.
+- Added pinned placeholder records so pinned apps can render and launch even when they are not already running.
+- Replaced app hover/frontmost background overlays with dot indicators for open apps and a rounded bottom bar for the focused app.
+- Restored subtle hover icon growth without using a hover background overlay.
+
 Known limitations:
 
 - Empty Trash is delegated to Finder through Hammerspoon's AppleScript bridge.
