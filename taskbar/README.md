@@ -92,7 +92,7 @@ spoon.Taskbar:debugTrashState()
 - `Taskbar.spoon/screens.lua`: Monitor discovery and bar geometry.
 - `Taskbar.spoon/drawing.lua`: `hs.canvas` creation, icon rendering, hover rendering, hit-testing, cleanup.
 - `Taskbar.spoon/events.lua`: Application and display watchers with small deferred refreshes.
-- `Taskbar.spoon/reservation.lua`: Window avoidance for Hammerbar's reserved screen space.
+- `Taskbar.spoon/reservation.lua`: Window avoidance for Taskbar's reserved screen space.
 - `Taskbar.spoon/attention.lua`: Best-effort Dock accessibility scan for red attention dots.
 - `Taskbar.spoon/pins.lua`: Pinned app order, persistence, pin/unpin operations.
 - `Taskbar.spoon/menu.lua`: Right-click app context menu.
@@ -124,7 +124,7 @@ The bars are normal floating Hammerspoon canvases. Hammerspoon cannot change the
 
 Attention dots are discovered from Notification Center accessibility events and, as a fallback, by scanning the Dock accessibility tree when `accessibilityBadges` is enabled. This is best-effort because macOS and apps do not guarantee a stable accessibility representation for notification badges. Use `spoon.Taskbar:debugAttentionTexts()` from the Hammerspoon console to inspect what the Dock exposes.
 
-Pinned apps render on the left, unpinned running apps render on the right, and a separator appears between the groups. Left-click and hold an icon, then drag horizontally inside the bar to reorder; icons snap into their new slots as you cross midpoint thresholds. Drag a running app to the left side to pin it; drag a pinned app to the right side to unpin it. Right-click an app for Pin/Unpin, Quit, and Force Quit. Pin and app order are persisted with `hs.settings` under `Hammerbar.pinnedApps` and `Hammerbar.appOrder` when `persistPinnedApps` is enabled, so Hammerbar does not rewrite your `init.lua`.
+Pinned apps render on the left, unpinned running apps render on the right, and a separator appears between the groups. Left-click and hold an icon, then drag horizontally inside the bar to reorder; icons snap into their new slots as you cross midpoint thresholds. Drag a running app to the left side to pin it; drag a pinned app to the right side to unpin it. Right-click an app for Pin/Unpin, Quit, and Force Quit. Pin and app order are persisted with `hs.settings` under `Taskbar.pinnedApps` and `Taskbar.appOrder` when `persistPinnedApps` is enabled, so Taskbar does not rewrite your `init.lua`.
 
 The clock and Trash live on the right side of the bar. Left-click Trash to open `~/.Trash`; right-click it for an Open/Empty menu. The Trash icon is checked periodically using `hs.fs` across standard Trash folders plus the Dock accessibility label when available, and changes appearance when visible trash items exist.
 

@@ -1,4 +1,4 @@
---- Screen and bar geometry helpers for Hammerbar.
+--- Screen and bar geometry helpers for Taskbar.
 ---
 --- This module converts the current hs.screen layout into one bar frame per
 --- monitor. It deliberately does not create canvases or know about app state.

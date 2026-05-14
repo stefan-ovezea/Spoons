@@ -1,4 +1,4 @@
---- Running application state for Hammerbar.
+--- Running application state for Taskbar.
 ---
 --- This module owns application discovery, filtering, sorting, icon lookup,
 --- and app activation. Rendering code consumes the plain app records returned

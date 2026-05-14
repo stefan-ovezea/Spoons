@@ -1,4 +1,4 @@
---- Left-click drag handling for Hammerbar.
+--- Left-click drag handling for Taskbar.
 ---
 --- Dragging is handled with hs.eventtap instead of hs.canvas callbacks because
 --- canvas mouse movement depends on per-element tracking flags. The eventtap

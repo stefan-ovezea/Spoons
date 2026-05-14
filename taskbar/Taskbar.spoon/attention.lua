@@ -1,4 +1,4 @@
---- Accessibility-backed attention discovery for Hammerbar.
+--- Accessibility-backed attention discovery for Taskbar.
 ---
 --- This module is intentionally best-effort. It scans the Dock accessibility
 --- tree for app items whose accessible text appears to mention unread

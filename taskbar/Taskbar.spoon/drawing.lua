@@ -1,4 +1,4 @@
---- hs.canvas rendering for Hammerbar.
+--- hs.canvas rendering for Taskbar.
 ---
 --- This module creates and updates one canvas per screen. It is intentionally
 --- stateless apart from state.bars, which stores canvases and click regions.

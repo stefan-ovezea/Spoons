@@ -1,12 +1,12 @@
---- App pinning state for Hammerbar.
+--- App pinning state for Taskbar.
 ---
 --- This module owns the ordered pinned-app list. Pins are keyed by the same
 --- app key used by apps.lua, usually the bundle ID.
 
 local M = {}
 
-local pinnedSettingsKey = "Hammerbar.pinnedApps"
-local orderSettingsKey = "Hammerbar.appOrder"
+local pinnedSettingsKey = "Taskbar.pinnedApps"
+local orderSettingsKey = "Taskbar.appOrder"
 
 local function copyList(source)
     local target = {}

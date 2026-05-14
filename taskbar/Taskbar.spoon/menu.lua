@@ -1,8 +1,8 @@
---- Context menu handling for Hammerbar.
+--- Context menu handling for Taskbar.
 ---
 --- hs.canvas mouse callbacks do not expose a clean mouse-button value, so this
 --- module uses hs.eventtap for right-clicks and only handles clicks that land
---- inside a Hammerbar app region.
+--- inside a Taskbar app region.
 
 local M = {}
 
@@ -66,7 +66,7 @@ local function menuItems(state, app)
     end
 
     local pinned = state.pins.isPinned(state, app)
-    local pinTitle = pinned and "Unpin from Hammerbar" or "Pin to Hammerbar"
+    local pinTitle = pinned and "Unpin from Taskbar" or "Pin to Taskbar"
 
     return {
         { title = app.name, disabled = true },

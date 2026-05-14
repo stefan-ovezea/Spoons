@@ -2,7 +2,7 @@
 
 ## 2026-05-14
 
-Created the first Hammerbar Spoon scaffold.
+Created the first Taskbar Spoon scaffold.
 
 - Added `Taskbar.spoon` with separate modules for config, apps, screens, drawing, events, and lifecycle.
 - Implemented one `hs.canvas` bar per monitor.
@@ -47,7 +47,7 @@ Known limitations:
 - Added drag-to-pin, drag-to-unpin, and drag-to-reorder for running apps.
 - Added right-click context menu with Pin/Unpin, Quit, and Force Quit.
 - Added optional `debugNotificationBadge` fake app for visual badge testing.
-- Added drag reorder for unpinned apps and persisted app order under `Hammerbar.appOrder`.
+- Added drag reorder for unpinned apps and persisted app order under `Taskbar.appOrder`.
 - Changed drag behavior to live horizontal reordering with slot snapping and no animation.
 - Deferred `hs.settings` writes during drag so app order is persisted once on mouse release instead of on every mouse move.
 

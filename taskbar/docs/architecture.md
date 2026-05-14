@@ -1,6 +1,6 @@
 # Architecture
 
-Hammerbar is split into small Lua modules loaded by `Taskbar.spoon/init.lua` with `dofile`. This avoids package-path assumptions for nested Spoon files and keeps module boundaries explicit.
+Taskbar is split into small Lua modules loaded by `Taskbar.spoon/init.lua` with `dofile`. This avoids package-path assumptions for nested Spoon files and keeps module boundaries explicit.
 
 ## State Shape
 
@@ -44,7 +44,7 @@ Modules receive this state object instead of using global variables.
 
 ## Menu Flow
 
-`menu.lua` uses `hs.eventtap` to catch right-clicks that land inside Hammerbar regions and shows a hidden `hs.menubar` popup menu. App menu actions pin or unpin through `pins.lua`, and quit apps through `hs.application`. Trash menu actions open or empty Trash through `trash.lua`.
+`menu.lua` uses `hs.eventtap` to catch right-clicks that land inside Taskbar regions and shows a hidden `hs.menubar` popup menu. App menu actions pin or unpin through `pins.lua`, and quit apps through `hs.application`. Trash menu actions open or empty Trash through `trash.lua`.
 
 ## Widget Flow
 
@@ -66,7 +66,7 @@ The canvas receives mouse callbacks at the canvas level for hover state. `drawin
 
 ## Attention Flow
 
-`attention.lua` observes Notification Center accessibility layout changes and reads notification `AXStackingIdentifier` values to map new banners back to running apps. It increments an in-memory per-app count for notifications seen during the current Hammerbar session, clearing that count when the app is activated. It can also scan the Dock accessibility tree when `accessibilityBadges` is enabled. Both paths expose attention state through `state.accessibilityBadges`.
+`attention.lua` observes Notification Center accessibility layout changes and reads notification `AXStackingIdentifier` values to map new banners back to running apps. It increments an in-memory per-app count for notifications seen during the current Taskbar session, clearing that count when the app is activated. It can also scan the Dock accessibility tree when `accessibilityBadges` is enabled. Both paths expose attention state through `state.accessibilityBadges`.
 
 ## Reservation Flow
 

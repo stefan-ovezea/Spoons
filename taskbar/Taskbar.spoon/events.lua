@@ -1,4 +1,4 @@
---- Event watchers for Hammerbar.
+--- Event watchers for Taskbar.
 ---
 --- This module wires Hammerspoon app and screen notifications into the central
 --- state object. It schedules short deferred updates to coalesce noisy events.

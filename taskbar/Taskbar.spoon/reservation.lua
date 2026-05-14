@@ -1,8 +1,8 @@
---- Window reservation for Hammerbar.
+--- Window reservation for Taskbar.
 ---
 --- macOS does not expose a public Hammerspoon API for changing the system's
 --- actual work area. This module approximates reservation by keeping standard
---- visible windows inside a per-screen work area reduced by Hammerbar's height.
+--- visible windows inside a per-screen work area reduced by Taskbar's height.
 
 local M = {}
 
@@ -96,7 +96,7 @@ local function constrainedFrame(frame, area)
     return nextFrame
 end
 
---- Moves a single window inside Hammerbar's reserved work area if needed.
+--- Moves a single window inside Taskbar's reserved work area if needed.
 function M.applyToWindow(state, window)
     if state.reservationApplying or not isReservable(state, window) then return end
 

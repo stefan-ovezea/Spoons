@@ -1,4 +1,4 @@
---- Default configuration for Hammerbar.
+--- Default configuration for Taskbar.
 ---
 --- Values in this module are copied into the Spoon instance and may be
 --- overridden from the user's Hammerspoon init.lua before calling :start().

@@ -1,4 +1,4 @@
---- Trash state and actions for Hammerbar.
+--- Trash state and actions for Taskbar.
 
 local M = {}
 

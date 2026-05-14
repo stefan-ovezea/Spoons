@@ -1,4 +1,4 @@
---- Hammerbar Spoon entry point.
+--- Taskbar Spoon entry point.
 ---
 --- Public API:
 ---   spoon.Taskbar:start()
@@ -119,7 +119,7 @@ function obj:debugTrashState()
 end
 
 local function buildState(self)
-    local logger = hs.logger.new("Hammerbar", self.config.logLevel)
+    local logger = hs.logger.new("Taskbar", self.config.logLevel)
     local state = {
         config = self.config,
         logger = logger,
@@ -172,7 +172,7 @@ local function stopWidgetTimer(state)
     end
 end
 
---- Starts Hammerbar and creates one bar per connected monitor.
+--- Starts Taskbar and creates one bar per connected monitor.
 function obj:start()
     if self.state then
         self.state.logger.d("start called while already running")
@@ -180,7 +180,7 @@ function obj:start()
     end
 
     self.state = buildState(self)
-    self.state.logger.i("starting Hammerbar")
+    self.state.logger.i("starting Taskbar")
 
     apps.refresh(self.state)
     pins.init(self.state)
@@ -206,7 +206,7 @@ end
 function obj:stop()
     if not self.state then return self end
 
-    self.state.logger.i("stopping Hammerbar")
+    self.state.logger.i("stopping Taskbar")
     stopWidgetTimer(self.state)
     drag.stop(self.state)
     menu.stop(self.state)
@@ -219,7 +219,7 @@ function obj:stop()
     return self
 end
 
---- Restarts Hammerbar with the current configuration.
+--- Restarts Taskbar with the current configuration.
 function obj:reload()
     return self:stop():start()
 end
