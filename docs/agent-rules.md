@@ -53,3 +53,14 @@ taskbar/
 - Keep Spoon runtime code self-contained inside the `.spoon` directory.
 - Keep user bootstrap/config code in the Spoon folder's `init/` directory.
 - Update documentation in the same change when behavior or structure changes.
+- Make sure to keep the config code inside the `init/` directory up to date when introducing new configs for a specific Spoon
+
+## Verification
+
+- Run Lua syntax checks for changed Spoon and init files when possible.
+- Prefer `luac -p` for syntax-only checks.
+- If `lua` or `luac` are not available on `PATH`, check common Homebrew locations before reporting that Lua is unavailable:
+  - `/opt/homebrew/bin/lua`
+  - `/opt/homebrew/bin/luac`
+  - `/usr/local/bin/lua`
+  - `/usr/local/bin/luac`

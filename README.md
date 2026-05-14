@@ -7,6 +7,7 @@ A collection of [Hammerspoon](https://www.hammerspoon.org/) Spoons.
 | Folder     | Spoon           | Description                                                                             |
 | ---------- | --------------- | --------------------------------------------------------------------------------------- |
 | `taskbar/` | `Taskbar.spoon` | Lightweight macOS taskbar replacement: app icons, click-to-focus, pinning, clock, Trash |
+| `switcher/` | `WindowSwitcher.spoon` | Windows-style `cmd+tab` switcher for picking individual app windows |
 
 ## Install
 
@@ -23,7 +24,7 @@ The script also copies each Spoon folder's default init script from `init/<folde
 
 ## Usage
 
-After installing, the generated `~/.hammerspoon/init.lua` loads app bootstrap files from `~/.hammerspoon/apps/`. The Taskbar bootstrap file loads and starts `Taskbar.spoon`.
+After installing, the generated `~/.hammerspoon/init.lua` loads app bootstrap files from `~/.hammerspoon/apps/`. The Taskbar bootstrap file loads and starts `Taskbar.spoon`; the WindowSwitcher bootstrap file loads `WindowSwitcher.spoon` and binds `cmd+tab` / `cmd+shift+tab`.
 
 You can also load a spoon manually in `~/.hammerspoon/init.lua`:
 
