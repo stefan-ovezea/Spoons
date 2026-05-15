@@ -6,7 +6,7 @@ The switcher opens in the middle of the screen containing the mouse pointer.
 
 ## Status
 
-This is an initial implementation focused on fast window picking. It lists standard windows in most-recently-focused order, includes minimized and hidden app windows where Hammerspoon exposes them, and focuses the selected window on release.
+This is an initial implementation focused on fast window picking. It lists standard windows in most-recently-focused order, includes minimized and hidden app windows where Hammerspoon exposes them, and focuses the selected window on release. The canvas UI uses the repository-wide Catppuccin Mocha palette from `DESIGN.md`.
 
 ## Bundle install
 

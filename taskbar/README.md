@@ -6,7 +6,7 @@ The current Spoon folder is `Taskbar.spoon` so it loads as `spoon.Taskbar`, matc
 
 ## Status
 
-This is a working early implementation optimized for readability and iteration speed. It renders app icons, keeps normal windows out of the bar area, supports pinning/reordering, shows running indicators and best-effort notification attention badges, and includes a small right-side clock plus Trash control. It does not integrate with Spaces or animate.
+This is a working early implementation optimized for readability and iteration speed. It renders app icons with a Catppuccin Mocha toolbar palette, keeps normal windows out of the bar area, supports pinning/reordering, shows running indicators and best-effort notification attention badges, and includes a small right-side clock plus Trash control. It does not integrate with Spaces or animate.
 
 ## Bundle install
 

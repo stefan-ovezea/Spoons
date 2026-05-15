@@ -61,15 +61,15 @@ local config = {
     },
 
     colors = {
-        background = { red = 0.05, green = 0.05, blue = 0.06, alpha = 0.82 },
-        separator = { red = 0.52, green = 0.52, blue = 0.56, alpha = 0.55 },
-        clockText = { red = 0.86, green = 0.86, blue = 0.88, alpha = 1.0 },
-        trash = { red = 0.76, green = 0.78, blue = 0.82, alpha = 1.0 },
-        trashFull = { red = 0.94, green = 0.94, blue = 0.96, alpha = 1.0 },
-        trashFill = { red = 0.38, green = 0.58, blue = 0.96, alpha = 0.80 },
-        attention = { red = 0.92, green = 0.08, blue = 0.10, alpha = 1.0 },
-        attentionText = { red = 1.0, green = 1.0, blue = 1.0, alpha = 1.0 },
-        runningIndicator = { red = 0.86, green = 0.88, blue = 0.92, alpha = 0.95 },
+        background = { red = 0.1176, green = 0.1176, blue = 0.1804, alpha = 0.90 }, -- Base
+        separator = { red = 0.3451, green = 0.3569, blue = 0.4392, alpha = 0.70 }, -- Surface 2
+        clockText = { red = 0.8039, green = 0.8392, blue = 0.9569, alpha = 1.0 }, -- Text
+        trash = { red = 0.7294, green = 0.7608, blue = 0.8706, alpha = 1.0 }, -- Subtext 1
+        trashFull = { red = 0.8039, green = 0.8392, blue = 0.9569, alpha = 1.0 }, -- Text
+        trashFill = { red = 0.5373, green = 0.7059, blue = 0.9804, alpha = 0.80 }, -- Blue
+        attention = { red = 0.9529, green = 0.5451, blue = 0.6588, alpha = 1.0 }, -- Red
+        attentionText = { red = 0.1176, green = 0.1176, blue = 0.1804, alpha = 1.0 }, -- Base
+        runningIndicator = { red = 0.7961, green = 0.6510, blue = 0.9686, alpha = 0.95 }, -- Mauve
     },
 
     excludedApps = {

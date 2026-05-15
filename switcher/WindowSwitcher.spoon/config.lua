@@ -1,3 +1,37 @@
+local function rgba(red, green, blue, alpha)
+    return {
+        red = red / 255,
+        green = green / 255,
+        blue = blue / 255,
+        alpha = alpha or 1.0,
+    }
+end
+
+local mocha = {
+    mauve = rgba(203, 166, 247),
+    lavender = rgba(180, 190, 254),
+    blue = rgba(137, 180, 250),
+    text = rgba(205, 214, 244),
+    subtext0 = rgba(166, 173, 200),
+    subtext1 = rgba(186, 194, 222),
+    overlay0 = rgba(108, 112, 134),
+    overlay2 = rgba(147, 153, 178),
+    surface0 = rgba(49, 50, 68),
+    surface1 = rgba(69, 71, 90),
+    surface2 = rgba(88, 91, 112),
+    base = rgba(30, 30, 46),
+    mantle = rgba(24, 24, 37),
+}
+
+local function withAlpha(color, alpha)
+    return {
+        red = color.red,
+        green = color.green,
+        blue = color.blue,
+        alpha = alpha,
+    }
+end
+
 local M = {
     logLevel = "info",
 
@@ -36,16 +70,17 @@ local M = {
     emptyFontSize = 13,
 
     colors = {
-        panel = { red = 0.10, green = 0.11, blue = 0.13, alpha = 0.94 },
-        border = { red = 0.32, green = 0.35, blue = 0.40, alpha = 0.85 },
-        selected = { red = 0.20, green = 0.42, blue = 0.90, alpha = 0.92 },
-        selectedFill = { red = 0.20, green = 0.42, blue = 0.90, alpha = 0.18 },
-        scrollbarTrack = { red = 0.45, green = 0.48, blue = 0.54, alpha = 0.22 },
-        scrollbarThumb = { red = 0.74, green = 0.77, blue = 0.82, alpha = 0.72 },
-        titleText = { red = 0.95, green = 0.96, blue = 0.98, alpha = 1.0 },
-        appText = { red = 0.68, green = 0.72, blue = 0.78, alpha = 1.0 },
-        emptyText = { red = 0.82, green = 0.84, blue = 0.88, alpha = 1.0 },
+        panel = withAlpha(mocha.base, 0.96),
+        border = withAlpha(mocha.surface2, 0.86),
+        selected = withAlpha(mocha.lavender, 0.82),
+        selectedFill = withAlpha(mocha.surface1, 0.70),
+        scrollbarTrack = withAlpha(mocha.overlay0, 0.24),
+        scrollbarThumb = withAlpha(mocha.subtext1, 0.78),
+        titleText = mocha.text,
+        appText = mocha.subtext0,
+        emptyText = mocha.subtext1,
     },
+    palette = mocha,
 }
 
 return M

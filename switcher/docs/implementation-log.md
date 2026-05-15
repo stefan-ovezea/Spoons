@@ -14,3 +14,4 @@
 - Added row-aware up/down navigation, mouse-hover selection, and a scrollbar indicator for overflow.
 - Added mouse-wheel scrolling for overflowing switcher rows.
 - Reversed physical mouse-wheel scrolling while preserving natural trackpad scrolling.
+- Updated the switcher canvas colors to use Catppuccin Mocha role tokens from `DESIGN.md`.

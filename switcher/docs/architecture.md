@@ -31,3 +31,5 @@ Window records and app icons are cached by the Spoon lifecycle. Application and 
 `drawing.lua` owns all `hs.canvas` details and hit-test regions. Runtime state stores plain window records, the selected index, and a small list of rendered regions for mouse clicks.
 
 When there are more windows than visible slots, `drawing.lua` keeps `visibleStartIndex` aligned to grid rows and renders a scrollbar thumb to show overflow position.
+
+`config.lua` defines the Catppuccin Mocha palette used by the switcher and maps rendering roles to restrained Mocha tokens: Base for the panel, Surface tokens for borders, Blue for selection, Overlay/Subtext for scrollbars and secondary text, and Text for primary labels.

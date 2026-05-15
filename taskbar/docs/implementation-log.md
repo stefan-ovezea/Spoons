@@ -74,6 +74,7 @@ Known limitations:
 - Added pinned placeholder records so pinned apps can render and launch even when they are not already running.
 - Replaced app hover/frontmost background overlays with dot indicators for open apps and a rounded bottom bar for the focused app.
 - Restored subtle hover icon growth without using a hover background overlay.
+- Updated Taskbar canvas colors to use the Catppuccin Mocha palette from the root `DESIGN.md`.
 
 Known limitations:
 

@@ -150,8 +150,8 @@ local function addTile(elements, state, item, x, y, index)
             id = "selected-border-" .. tostring(index),
             type = "rectangle",
             action = "stroke",
-            strokeWidth = 2,
-            frame = { x = x + 1, y = y + 1, w = cfg.tileWidth - 2, h = cfg.tileHeight - 2 },
+            strokeWidth = 1.2,
+            frame = { x = x + 0.6, y = y + 0.6, w = cfg.tileWidth - 1.2, h = cfg.tileHeight - 1.2 },
             roundedRectRadii = { xRadius = cfg.selectedRadius, yRadius = cfg.selectedRadius },
             strokeColor = cfg.colors.selected,
         })

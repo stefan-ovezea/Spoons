@@ -64,8 +64,17 @@ while IFS= read -r -d '' app_init; do
         continue
     fi
 
-    cp "$app_init" "$target"
-    echo "copied:   $target"
+    if [[ -L "$target" ]]; then
+        rm "$target"
+        ln -s "$app_init" "$target"
+        echo "updated:  $target -> $app_init"
+    elif [[ -e "$target" ]]; then
+        echo "warning:  $target already exists and is not a symlink — skipping"
+    else
+        ln -s "$app_init" "$target"
+        echo "linked:   $target -> $app_init"
+    fi
+
     (( apps_found++ )) || true
 done < <(find "$REPO_ROOT" -path '*/init/*.lua' -type f -print0)
 
@@ -78,5 +87,5 @@ fi
 if [[ $apps_found -eq 0 ]]; then
     echo "no app init scripts found under $REPO_ROOT"
 else
-    echo "done — $apps_found app init script(s) copied"
+    echo "done — $apps_found app init script(s) processed"
 fi
