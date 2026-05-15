@@ -26,10 +26,16 @@ Window records and app icons are cached by the Spoon lifecycle. Application and 
 
 `keys.lua` also runs a watchdog timer that restarts the event tap if macOS disables it. This is still an interception strategy; macOS does not expose a supported native switcher disable/rebind API to Hammerspoon.
 
+## Attention Badges
+
+`attention.lua` mirrors Taskbar's best-effort notification flow. A Notification Center accessibility observer increments in-memory app counters for newly observed banners, and a periodic Dock accessibility scan marks apps whose Dock text appears to mention notifications, unread messages, alerts, or numeric badges.
+
+Window records carry an app key and bundle ID so any window belonging to an app with an attention marker can render the same badge. Focusing an app clears its marker through the application watcher.
+
 ## Rendering
 
 `drawing.lua` owns all `hs.canvas` details and hit-test regions. Runtime state stores plain window records, the selected index, and a small list of rendered regions for mouse clicks.
 
 When there are more windows than visible slots, `drawing.lua` keeps `visibleStartIndex` aligned to grid rows and renders a scrollbar thumb to show overflow position.
 
-`config.lua` defines the Catppuccin Mocha palette used by the switcher and maps rendering roles to restrained Mocha tokens: Base for the panel, Surface tokens for borders, Blue for selection, Overlay/Subtext for scrollbars and secondary text, and Text for primary labels.
+`config.lua` defines the Catppuccin Mocha palette used by the switcher and maps rendering roles to restrained Mocha tokens: Base for the panel, Surface tokens for fills and borders, Lavender for selection, Red for attention badges, Overlay/Subtext for scrollbars and secondary text, and Text for primary labels.

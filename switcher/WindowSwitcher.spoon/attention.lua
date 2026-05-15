@@ -1,4 +1,4 @@
---- Accessibility-backed attention discovery for Taskbar.
+--- Accessibility-backed attention discovery for WindowSwitcher.
 ---
 --- This module is intentionally best-effort. It scans the Dock accessibility
 --- tree for app items whose accessible text appears to mention unread
@@ -306,7 +306,7 @@ local function handleNotificationElement(state, element, depth, notification)
 
     if stackingID == "" then return end
     if markNotificationAttention(state, stackingID) then
-        state.drawing.render(state, state.screenList)
+        state.drawing.render(state)
     end
 end
 
@@ -417,7 +417,7 @@ function M.refresh(state)
     end
 
     state.accessibilityBadges = found
-    state.drawing.render(state, state.screenList)
+    state.drawing.render(state)
 end
 
 --- Returns raw Dock accessibility text samples for troubleshooting.

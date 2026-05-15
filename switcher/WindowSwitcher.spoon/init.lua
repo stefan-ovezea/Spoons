@@ -7,6 +7,7 @@
 ---   spoon.WindowSwitcher:stop()
 ---   spoon.WindowSwitcher:reload()
 ---   spoon.WindowSwitcher:show()
+---   spoon.WindowSwitcher:refreshAttention()
 
 local obj = {}
 obj.__index = obj
@@ -26,6 +27,7 @@ local defaultConfig = loadModule("config")
 local windows = loadModule("windows")
 local drawing = loadModule("drawing")
 local keys = loadModule("keys")
+local attention = loadModule("attention")
 
 local function copyTable(source)
     local target = {}
@@ -54,6 +56,24 @@ obj.config = copyTable(defaultConfig)
 function obj:configure(userConfig)
     mergeTable(self.config, userConfig)
     return self
+end
+
+function obj:refreshAttention()
+    if self.state then
+        attention.refresh(self.state)
+    end
+
+    return self
+end
+
+function obj:debugAttentionTexts()
+    if not self.state then return {} end
+    return attention.debugTexts(self.state)
+end
+
+function obj:debugNotificationCenterTexts()
+    if not self.state then return {} end
+    return attention.debugNotificationCenterTexts(self.state)
 end
 
 local function cycle(state, direction)
@@ -96,6 +116,7 @@ end
 
 local function refreshWindows(state)
     state.itemsCache = windows.current(state.config, state.iconCache)
+    state.apps = state.itemsCache
 end
 
 local function scheduleRefresh(state, delay)
@@ -119,6 +140,8 @@ local function openSwitcher(state, direction)
     state.items = state.itemsCache or {}
     state.screen = windows.currentScreen()
     state.visible = true
+    state.mouseSelectionEnabled = false
+    state.initialMousePosition = hs.mouse.absolutePosition()
 
     if #state.items > 1 then
         state.selectedIndex = direction > 0 and 2 or #state.items
@@ -166,6 +189,8 @@ local function buildState(self)
         iconCache = {},
         selectedIndex = 1,
         visible = false,
+        mouseSelectionEnabled = false,
+        initialMousePosition = nil,
         commandTabPending = false,
         acceptOnOpen = false,
         canvas = nil,
@@ -174,6 +199,8 @@ local function buildState(self)
         windows = windows,
         drawing = drawing,
         keys = keys,
+        attention = attention,
+        accessibilityBadges = {},
     }
 
     state.switch = function(direction)
@@ -225,6 +252,20 @@ local function buildState(self)
     end
 
     state.onMouseMove = function(x, y)
+        if not state.mouseSelectionEnabled then
+            local point = hs.mouse.absolutePosition()
+            local initial = state.initialMousePosition
+            local threshold = state.config.mouseActivationThreshold
+            local dx = initial and math.abs(point.x - initial.x) or threshold
+            local dy = initial and math.abs(point.y - initial.y) or threshold
+
+            if dx < threshold and dy < threshold then
+                return
+            end
+
+            state.mouseSelectionEnabled = true
+        end
+
         local index = drawing.hitTest(state, x, y)
         if index and index ~= state.selectedIndex then
             state.selectedIndex = index
@@ -247,7 +288,10 @@ local function startRefreshers(state)
         end
     end)
 
-    state.appWatcher = hs.application.watcher.new(function()
+    state.appWatcher = hs.application.watcher.new(function(_, event, app)
+        if event == hs.application.watcher.activated and app then
+            attention.clearForApp(state, app)
+        end
         scheduleRefresh(state)
     end)
     state.appWatcher:start()
@@ -305,6 +349,7 @@ function obj:start()
     self.state = buildState(self)
     self.state.logger.i("starting WindowSwitcher")
     startRefreshers(self.state)
+    attention.start(self.state)
     keys.start(self.state)
 
     return self
@@ -315,6 +360,7 @@ function obj:stop()
 
     self.state.logger.i("stopping WindowSwitcher")
     keys.stop(self.state)
+    attention.stop(self.state)
     stopRefreshers(self.state)
     drawing.delete(self.state)
     self.state = nil

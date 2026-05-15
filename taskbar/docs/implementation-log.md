@@ -75,6 +75,12 @@ Known limitations:
 - Replaced app hover/frontmost background overlays with dot indicators for open apps and a rounded bottom bar for the focused app.
 - Restored subtle hover icon growth without using a hover background overlay.
 - Updated Taskbar canvas colors to use the Catppuccin Mocha palette from the root `DESIGN.md`.
+- Added an empty-space Taskbar context menu with an Open Task Manager action backed by Activity Monitor.
+- Swapped the hand-drawn Trash widget for bundled empty/full PNG assets, with the old vector drawing retained as a fallback.
+- Made Trash fullness detection explicitly check `~/.Trash` and prefer filesystem results over Dock accessibility state.
+- Restored Notification Center debug logging and expanded it to print full AX summary/static text payloads for observed notification events.
+- Added a Finder Trash item-count fallback for cases where macOS privacy permissions block direct `~/.Trash` reads.
+- Increased the Trash asset size and nudged it upward inside the widget button.
 
 Known limitations:
 

@@ -30,8 +30,11 @@ local function pathJoin(...)
 end
 
 local function hasVisibleEntry(path)
-    local iterator = hs.fs.dir(path)
-    if not iterator then return false end
+    local attrs = hs.fs.attributes(path)
+    if not attrs or attrs.mode ~= "directory" then return false end
+
+    local ok, iterator = pcall(hs.fs.dir, path)
+    if not ok or not iterator then return false end
 
     for entry in iterator do
         if not ignoredEntries[entry] then
@@ -42,9 +45,16 @@ local function hasVisibleEntry(path)
     return false
 end
 
+local function homeTrashFull()
+    return hasVisibleEntry(trashPath())
+end
+
 local function trashesFolderHasItems(path)
-    local iterator = hs.fs.dir(path)
-    if not iterator then return false end
+    local attrs = hs.fs.attributes(path)
+    if not attrs or attrs.mode ~= "directory" then return false end
+
+    local ok, iterator = pcall(hs.fs.dir, path)
+    if not ok or not iterator then return false end
 
     for entry in iterator do
         if not ignoredEntries[entry] and hasVisibleEntry(pathJoin(path, entry)) then
@@ -56,12 +66,12 @@ local function trashesFolderHasItems(path)
 end
 
 local function anyFilesystemTrashFull()
-    if hasVisibleEntry(trashPath()) then return true end
+    if homeTrashFull() then return true end
     if trashesFolderHasItems("/.Trashes") then return true end
     if trashesFolderHasItems("/System/Volumes/Data/.Trashes") then return true end
 
-    local volumes = hs.fs.dir("/Volumes")
-    if not volumes then return false end
+    local ok, volumes = pcall(hs.fs.dir, "/Volumes")
+    if not ok or not volumes then return false end
 
     for volume in volumes do
         if not ignoredEntries[volume] then
@@ -72,6 +82,13 @@ local function anyFilesystemTrashFull()
     end
 
     return false
+end
+
+local function finderTrashFull()
+    local ok, count = hs.osascript.applescript('tell application "Finder" to count of items of trash')
+    if not ok then return nil end
+
+    return (tonumber(count) or 0) > 0
 end
 
 local function appendString(target, value)
@@ -140,18 +157,32 @@ local function dockTrashFull(state)
 end
 
 function M.refresh(state)
+    local homeOk, homeFull = pcall(homeTrashFull)
     local fsOk, fsFull = pcall(anyFilesystemTrashFull)
+    local finderOk, finderFull = pcall(finderTrashFull)
     local axOk, axFull = pcall(function()
         return dockTrashFull(state)
     end)
 
-    state.trashFull = (axOk and axFull == true) or (fsOk and fsFull == true)
+    if fsOk and fsFull == true then
+        state.trashFull = true
+    elseif finderOk and finderFull ~= nil then
+        state.trashFull = finderFull == true
+    elseif fsOk then
+        state.trashFull = false
+    else
+        state.trashFull = axOk and axFull == true
+    end
 
     if state.config.trashDebug then
         state.logger.df(
-            "trash refresh: filesystemOk=%s filesystemFull=%s dockOk=%s dockFull=%s final=%s",
+            "trash refresh: homeOk=%s homeFull=%s filesystemOk=%s filesystemFull=%s finderOk=%s finderFull=%s dockOk=%s dockFull=%s final=%s",
+            tostring(homeOk),
+            tostring(homeFull),
             tostring(fsOk),
             tostring(fsFull),
+            tostring(finderOk),
+            tostring(finderFull),
             tostring(axOk),
             tostring(axFull),
             tostring(state.trashFull)
@@ -160,14 +191,21 @@ function M.refresh(state)
 end
 
 function M.debug(state)
+    local homeOk, homeFull = pcall(homeTrashFull)
     local fsOk, fsFull = pcall(anyFilesystemTrashFull)
+    local finderOk, finderFull = pcall(finderTrashFull)
     local axOk, axFull = pcall(function()
         return dockTrashFull(state)
     end)
 
     return {
+        homeTrashPath = trashPath(),
+        homeTrashOk = homeOk,
+        homeTrashFull = homeFull,
         filesystemOk = fsOk,
         filesystemFull = fsFull,
+        finderOk = finderOk,
+        finderFull = finderFull,
         dockOk = axOk,
         dockFull = axFull,
         trashFull = state.trashFull,

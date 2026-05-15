@@ -20,6 +20,10 @@ local terminalBundleIds = {
     ["co.zeit.hyper"] = true,
 }
 
+local finderBundleIds = {
+    ["com.apple.finder"] = true,
+}
+
 local textNavigationBindings = {
     {
         from = { { "ctrl" }, "c" },
@@ -140,6 +144,11 @@ local textNavigationBindings = {
         description = "ctrl+w -> cmd+w",
     },
     {
+        from = { { "ctrl" }, "q" },
+        to = { { "cmd" }, "q" },
+        description = "ctrl+q -> cmd+q",
+    },
+    {
         from = { { "ctrl" }, "left" },
         to = { { "alt" }, "left" },
         terminalTo = { { "alt" }, "b" },
@@ -160,6 +169,17 @@ local textNavigationBindings = {
         from = { { "ctrl", "shift" }, "right" },
         to = { { "alt", "shift" }, "right" },
         description = "ctrl+shift+right -> option+shift+right",
+    },
+    {
+        from = { { "ctrl" }, "delete" },
+        to = { { "alt" }, "delete" },
+        description = "ctrl+backspace -> option+backspace",
+    },
+    {
+        from = { {}, "delete" },
+        to = { { "cmd" }, "delete" },
+        onlyInBundleIds = finderBundleIds,
+        description = "delete -> cmd+delete in Finder",
     },
     {
         from = { {}, "home" },
@@ -185,22 +205,26 @@ local textNavigationBindings = {
     },
     {
         from = { { "ctrl" }, "home" },
-        to = { { "cmd" }, "up" },
-        description = "ctrl+home -> cmd+up",
+        to = { { "cmd", "shift" }, "left" },
+        passthroughInTerminal = true,
+        description = "ctrl+home -> cmd+shift+left",
     },
     {
         from = { { "ctrl" }, "end" },
-        to = { { "cmd" }, "down" },
-        description = "ctrl+end -> cmd+down",
+        to = { { "cmd", "shift" }, "right" },
+        passthroughInTerminal = true,
+        description = "ctrl+end -> cmd+shift+right",
     },
     {
         from = { { "ctrl", "shift" }, "home" },
         to = { { "cmd", "shift" }, "up" },
+        passthroughInTerminal = true,
         description = "ctrl+shift+home -> cmd+shift+up",
     },
     {
         from = { { "ctrl", "shift" }, "end" },
         to = { { "cmd", "shift" }, "down" },
+        passthroughInTerminal = true,
         description = "ctrl+shift+end -> cmd+shift+down",
     },
 }
@@ -243,6 +267,11 @@ function M.isTerminalApp()
     return app ~= nil and terminalBundleIds[app:bundleID()] == true
 end
 
+function M.frontmostBundleID()
+    local app = hs.application.frontmostApplication()
+    return app and app:bundleID() or nil
+end
+
 function M.hasModifier(modifiers, name)
     for _, modifier in ipairs(modifiers) do
         if modifier == name then
@@ -271,6 +300,10 @@ function M.sendTextNavigation(binding)
     end
 
     if binding.terminalOnly and not M.isTerminalApp() then
+        return false
+    end
+
+    if binding.onlyInBundleIds and not binding.onlyInBundleIds[M.frontmostBundleID()] then
         return false
     end
 

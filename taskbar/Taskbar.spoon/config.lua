@@ -27,7 +27,8 @@ local config = {
     widgetSpacing = 8,
     widgetButtonWidth = 34,
     showTrash = true,
-    trashIconSize = 18,
+    trashIconSize = 22,
+    trashIconYOffset = -2,
     trashDebug = false,
     widgetRefreshInterval = 15,
     accessibilityBadges = true,
@@ -63,11 +64,11 @@ local config = {
     colors = {
         background = { red = 0.1176, green = 0.1176, blue = 0.1804, alpha = 0.90 }, -- Base
         separator = { red = 0.3451, green = 0.3569, blue = 0.4392, alpha = 0.70 }, -- Surface 2
-        clockText = { red = 0.8039, green = 0.8392, blue = 0.9569, alpha = 1.0 }, -- Text
+        clockText = { red = 1.0000, green = 1.0000, blue = 1.0000, alpha = 1.0 }, -- Native dark menu text
         trash = { red = 0.7294, green = 0.7608, blue = 0.8706, alpha = 1.0 }, -- Subtext 1
         trashFull = { red = 0.8039, green = 0.8392, blue = 0.9569, alpha = 1.0 }, -- Text
         trashFill = { red = 0.5373, green = 0.7059, blue = 0.9804, alpha = 0.80 }, -- Blue
-        attention = { red = 0.9529, green = 0.5451, blue = 0.6588, alpha = 1.0 }, -- Red
+        attention = { red = 0.9529, green = 0.4706, blue = 0.5608, alpha = 1.0 }, -- Redder Mocha Red
         attentionText = { red = 0.1176, green = 0.1176, blue = 0.1804, alpha = 1.0 }, -- Base
         runningIndicator = { red = 0.7961, green = 0.6510, blue = 0.9686, alpha = 0.95 }, -- Mauve
     },

@@ -1,8 +1,8 @@
 --- Context menu handling for Taskbar.
 ---
 --- hs.canvas mouse callbacks do not expose a clean mouse-button value, so this
---- module uses hs.eventtap for right-clicks and only handles clicks that land
---- inside a Taskbar app region.
+--- module uses hs.eventtap for right-clicks and handles clicks that land
+--- inside Taskbar app, widget, or empty bar regions.
 
 local M = {}
 
@@ -29,7 +29,23 @@ local function trashMenuItems(state)
     }
 end
 
-local function regionAtPoint(state, point)
+local function taskbarMenuItems()
+    return {
+        { title = "Taskbar", disabled = true },
+        { title = "-" },
+        {
+            title = "Open Task Manager",
+            fn = function()
+                local opened = hs.application.launchOrFocusByBundleID("com.apple.ActivityMonitor")
+                if not opened then
+                    hs.application.launchOrFocus("Activity Monitor")
+                end
+            end,
+        },
+    }
+end
+
+local function targetAtPoint(state, point)
     for _, bar in pairs(state.bars or {}) do
         local frame = bar.frame
         local inX = point.x >= frame.x and point.x <= frame.x + frame.w
@@ -37,7 +53,7 @@ local function regionAtPoint(state, point)
 
         if inX and inY then
             local region = state.drawing.regionAt(bar, point.x - frame.x, point.y - frame.y)
-            if region then return region end
+            return bar, region
         end
     end
 
@@ -122,6 +138,19 @@ function M.showTrash(state, point)
     state.contextMenu:popupMenu(point, true)
 end
 
+function M.showTaskbar(state, point)
+    if state.contextMenu then
+        state.contextMenu:delete()
+        state.contextMenu = nil
+    end
+
+    state.contextMenu = hs.menubar.new(false)
+    if not state.contextMenu then return end
+
+    state.contextMenu:setMenu(taskbarMenuItems())
+    state.contextMenu:popupMenu(point, true)
+end
+
 function M.start(state)
     if state.contextMenuTap then return end
 
@@ -129,8 +158,15 @@ function M.start(state)
         hs.eventtap.event.types.rightMouseDown,
     }, function(event)
         local point = event:location()
-        local region = regionAtPoint(state, point)
-        if not region then return false end
+        local bar, region = targetAtPoint(state, point)
+        if not bar then return false end
+
+        if not region then
+            hs.timer.doAfter(0, function()
+                M.showTaskbar(state, point)
+            end)
+            return true
+        end
 
         if region.kind == "trash" then
             hs.timer.doAfter(0, function()
@@ -139,7 +175,7 @@ function M.start(state)
             return true
         end
 
-        local app = appForKey(state, region.key)
+        local app = region.app or appForKey(state, region.key)
         if not app then return false end
 
         hs.timer.doAfter(0, function()

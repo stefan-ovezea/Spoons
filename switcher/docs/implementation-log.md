@@ -15,3 +15,5 @@
 - Added mouse-wheel scrolling for overflowing switcher rows.
 - Reversed physical mouse-wheel scrolling while preserving natural trackpad scrolling.
 - Updated the switcher canvas colors to use Catppuccin Mocha role tokens from `DESIGN.md`.
+- Added Taskbar-style Notification Center and Dock accessibility attention badges to switcher window tiles.
+- Ignored the initial mouse position for hover selection until the pointer actually moves after opening.

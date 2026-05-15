@@ -7,6 +7,18 @@ local function clampText(value, maxChars)
     return value:sub(1, maxChars - 1) .. "..."
 end
 
+local function attentionText(state, value)
+    if not state.config.attentionCounter then return "" end
+
+    local count = tonumber(value)
+    if not count or count <= 0 then return "" end
+    if count > state.config.attentionCounterMax then
+        return tostring(state.config.attentionCounterMax) .. "+"
+    end
+
+    return tostring(math.floor(count))
+end
+
 local function layout(state)
     local cfg = state.config
     local count = math.max(#state.items, 1)
@@ -132,6 +144,56 @@ local function addScrollbar(elements, state, spec, scroll)
     })
 end
 
+local function addAttentionBadge(elements, state, item, iconX, iconY, iconSize, index)
+    local value = (state.accessibilityBadges or {})[item.key]
+    if not value then return end
+
+    local cfg = state.config
+    local text = attentionText(state, value)
+    local diameter = cfg.attentionDotSize
+    local width = text ~= "" and math.max(diameter, (#text * 6) + 8) or diameter
+    local x = iconX + iconSize - math.floor(width * 0.42)
+    local y = math.max(6, iconY - math.floor(diameter * 0.35))
+
+    table.insert(elements, {
+        id = "attention-left-" .. tostring(index),
+        type = "oval",
+        action = "fill",
+        frame = { x = x, y = y, w = diameter, h = diameter },
+        fillColor = cfg.colors.attention,
+    })
+
+    if width > diameter then
+        table.insert(elements, {
+            id = "attention-center-" .. tostring(index),
+            type = "rectangle",
+            action = "fill",
+            frame = { x = x + math.floor(diameter / 2), y = y, w = width - diameter, h = diameter },
+            fillColor = cfg.colors.attention,
+        })
+    end
+
+    table.insert(elements, {
+        id = "attention-right-" .. tostring(index),
+        type = "oval",
+        action = "fill",
+        frame = { x = x + width - diameter, y = y, w = diameter, h = diameter },
+        fillColor = cfg.colors.attention,
+    })
+
+    if text ~= "" then
+        table.insert(elements, {
+            id = "attention-text-" .. tostring(index),
+            type = "text",
+            text = text,
+            frame = { x = x, y = y + 1, w = width, h = diameter + 2 },
+            textAlignment = "center",
+            textSize = 9,
+            textColor = cfg.colors.attentionText,
+        })
+    end
+end
+
 local function addTile(elements, state, item, x, y, index)
     local cfg = state.config
     local selected = index == state.selectedIndex
@@ -157,19 +219,24 @@ local function addTile(elements, state, item, x, y, index)
         })
     end
 
+    local iconX = x + math.floor((cfg.tileWidth - cfg.iconSize) / 2)
+    local iconY = y + 13
+
     if item.icon then
         table.insert(elements, {
             id = "icon-" .. tostring(index),
             type = "image",
             image = item.icon,
             frame = {
-                x = x + math.floor((cfg.tileWidth - cfg.iconSize) / 2),
-                y = y + 13,
+                x = iconX,
+                y = iconY,
                 w = cfg.iconSize,
                 h = cfg.iconSize,
             },
         })
     end
+
+    addAttentionBadge(elements, state, item, iconX, iconY, cfg.iconSize, index)
 
     table.insert(elements, {
         id = "title-" .. tostring(index),
@@ -261,7 +328,7 @@ function M.show(state)
 end
 
 function M.render(state)
-    if state.canvas then M.show(state) end
+    if state.visible and state.canvas then M.show(state) end
 end
 
 function M.hide(state)

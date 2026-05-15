@@ -50,6 +50,12 @@ spoon.WindowSwitcher:configure({
     includeUntitledWindows = false,
     refreshInterval = 1.0,
     refreshDebounce = 0.12,
+    mouseActivationThreshold = 3,
+    accessibilityBadges = true,
+    accessibilityBadgeInterval = 2,
+    notificationCenterObserver = true,
+    attentionCounter = true,
+    attentionDotSize = 14,
     reverseMouseWheelScroll = true,
     excludedApps = {
         ["org.hammerspoon.Hammerspoon"] = true,
@@ -71,6 +77,8 @@ spoon.WindowSwitcher:configure({
 - Mouse click: focus the highlighted window.
 - Mouse wheel: scroll overflowing rows when the pointer is over the switcher.
 
+Mouse hover selection is ignored until the pointer actually moves after the switcher opens, so an existing pointer position over the switcher will not change the keyboard-selected target.
+
 ## Public API
 
 ```lua
@@ -80,6 +88,9 @@ spoon.WindowSwitcher:start()
 spoon.WindowSwitcher:stop()
 spoon.WindowSwitcher:reload()
 spoon.WindowSwitcher:show()
+spoon.WindowSwitcher:refreshAttention()
+spoon.WindowSwitcher:debugAttentionTexts()
+spoon.WindowSwitcher:debugNotificationCenterTexts()
 ```
 
 ## Module Responsibilities
@@ -89,6 +100,7 @@ spoon.WindowSwitcher:show()
 - `WindowSwitcher.spoon/windows.lua`: Window discovery, filtering, ordering, and activation.
 - `WindowSwitcher.spoon/drawing.lua`: `hs.canvas` creation, rendering, and hit testing.
 - `WindowSwitcher.spoon/keys.lua`: Hotkeys and event taps for command-hold switching.
+- `WindowSwitcher.spoon/attention.lua`: Best-effort Notification Center and Dock accessibility scan for app notification badges.
 
 ## Hammerspoon APIs Used
 
@@ -102,6 +114,8 @@ spoon.WindowSwitcher:show()
 - `hs.canvas`
 - `hs.image`
 - `hs.logger`
+- `hs.timer`
+- `hs.axuielement`
 
 ## Notes
 
@@ -122,6 +136,8 @@ spoon.WindowSwitcher:configure({
 ```
 
 WindowSwitcher keeps a cached window list warm with application/window watchers plus a periodic refresh. This keeps `cmd+tab` responsive while still allowing minimized and hidden windows to appear when Hammerspoon exposes them.
+
+Notification badges are discovered from Notification Center accessibility events and, as a fallback, by scanning the Dock accessibility tree when `accessibilityBadges` is enabled. This mirrors Taskbar's best-effort attention flow: macOS and apps do not guarantee a stable accessibility representation, so use `spoon.WindowSwitcher:debugAttentionTexts()` and `spoon.WindowSwitcher:debugNotificationCenterTexts()` from the Hammerspoon console when troubleshooting.
 
 WindowSwitcher only lists windows that Hammerspoon can see. Some system panels, helper apps, private windows, and nonstandard app surfaces may not appear.
 

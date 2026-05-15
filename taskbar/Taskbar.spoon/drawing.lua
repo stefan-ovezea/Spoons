@@ -5,8 +5,14 @@
 
 local M = {}
 
+local spoonDir = debug.getinfo(1, "S").source:match("^@(.*/)")
+
 local function itemWidth(cfg)
     return cfg.iconSize + (cfg.padding * 2)
+end
+
+local function assetImage(name)
+    return hs.image.imageFromPath(spoonDir .. "assets/" .. name)
 end
 
 local function attentionText(state, value)
@@ -234,106 +240,122 @@ local function appendTrash(elements, state, screenBar, cfg, rightX)
     local x = rightX - buttonW
     local size = cfg.trashIconSize
     local iconX = x + math.floor((buttonW - size) / 2)
-    local iconY = math.floor((cfg.barHeight - size) / 2) + 1
-    local color = state.trashFull and cfg.colors.trashFull or cfg.colors.trash
-    local fullColor = cfg.colors.attention
-    local stroke = 1.4
+    local iconY = math.floor((cfg.barHeight - size) / 2) + cfg.trashIconYOffset
+    local image = state.trashFull and assetImage("trash-full.png") or assetImage("trash-empty.png")
 
-    local function appendRect(id, frame, fillColor)
+    if image then
         table.insert(elements, {
-            id = id,
-            type = "rectangle",
-            action = "fill",
-            frame = frame,
-            fillColor = fillColor,
+            id = "trash-icon",
+            type = "image",
+            image = image,
+            frame = {
+                x = iconX,
+                y = iconY,
+                w = size,
+                h = size,
+            },
         })
-    end
+    else
+        local color = state.trashFull and cfg.colors.trashFull or cfg.colors.trash
+        local fullColor = cfg.colors.attention
+        local stroke = 1.4
 
-    local function appendOval(id, frame, fillColor)
-        table.insert(elements, {
-            id = id,
-            type = "oval",
-            action = "fill",
-            frame = frame,
-            fillColor = fillColor,
-        })
-    end
+        local function appendRect(id, frame, fillColor)
+            table.insert(elements, {
+                id = id,
+                type = "rectangle",
+                action = "fill",
+                frame = frame,
+                fillColor = fillColor,
+            })
+        end
 
-    if state.trashFull then
-        appendRect("trash-full-body", {
-            x = iconX + 5,
-            y = iconY + 8,
-            w = size - 10,
-            h = size - 10,
-        }, cfg.colors.trashFill)
-        appendOval("trash-full-badge", {
-            x = iconX + size - 6,
-            y = iconY - 1,
-            w = 8,
-            h = 8,
-        }, fullColor)
-        appendOval("trash-full-paper-left", {
+        local function appendOval(id, frame, fillColor)
+            table.insert(elements, {
+                id = id,
+                type = "oval",
+                action = "fill",
+                frame = frame,
+                fillColor = fillColor,
+            })
+        end
+
+        if state.trashFull then
+            appendRect("trash-full-body", {
+                x = iconX + 5,
+                y = iconY + 8,
+                w = size - 10,
+                h = size - 10,
+            }, cfg.colors.trashFill)
+            appendOval("trash-full-badge", {
+                x = iconX + size - 6,
+                y = iconY - 1,
+                w = 8,
+                h = 8,
+            }, fullColor)
+            appendOval("trash-full-paper-left", {
+                x = iconX + 4,
+                y = iconY + 7,
+                w = 5,
+                h = 5,
+            }, fullColor)
+            appendRect("trash-full-paper-center", {
+                x = iconX + 8,
+                y = iconY + 6,
+                w = 5,
+                h = 6,
+            }, fullColor)
+            appendOval("trash-full-paper-right", {
+                x = iconX + size - 9,
+                y = iconY + 8,
+                w = 5,
+                h = 5,
+            }, fullColor)
+        end
+
+        appendRect("trash-handle", {
+            x = iconX + math.floor(size * 0.38),
+            y = iconY + 2,
+            w = math.floor(size * 0.24),
+            h = stroke,
+        }, color)
+        appendRect("trash-lid", {
+            x = iconX + 2,
+            y = iconY + 5,
+            w = size - 4,
+            h = stroke,
+        }, color)
+        appendRect("trash-left-wall", {
             x = iconX + 4,
             y = iconY + 7,
-            w = 5,
-            h = 5,
-        }, fullColor)
-        appendRect("trash-full-paper-center", {
-            x = iconX + 8,
-            y = iconY + 6,
-            w = 5,
-            h = 6,
-        }, fullColor)
-        appendOval("trash-full-paper-right", {
-            x = iconX + size - 9,
-            y = iconY + 8,
-            w = 5,
-            h = 5,
-        }, fullColor)
+            w = stroke,
+            h = size - 9,
+        }, color)
+        appendRect("trash-right-wall", {
+            x = iconX + size - 5,
+            y = iconY + 7,
+            w = stroke,
+            h = size - 9,
+        }, color)
+        appendRect("trash-bottom", {
+            x = iconX + 5,
+            y = iconY + size - 3,
+            w = size - 10,
+            h = stroke,
+        }, color)
+        appendRect("trash-rib-left", {
+            x = iconX + math.floor(size * 0.42),
+            y = iconY + 9,
+            w = 1,
+            h = size - 13,
+        }, color)
+        appendRect("trash-rib-right", {
+            x = iconX + math.floor(size * 0.58),
+            y = iconY + 9,
+            w = 1,
+            h = size - 13,
+        }, color)
     end
-
-    appendRect("trash-handle", {
-        x = iconX + math.floor(size * 0.38),
-        y = iconY + 2,
-        w = math.floor(size * 0.24),
-        h = stroke,
-    }, color)
-    appendRect("trash-lid", {
-        x = iconX + 2,
-        y = iconY + 5,
-        w = size - 4,
-        h = stroke,
-    }, color)
-    appendRect("trash-left-wall", {
-        x = iconX + 4,
-        y = iconY + 7,
-        w = stroke,
-        h = size - 9,
-    }, color)
-    appendRect("trash-right-wall", {
-        x = iconX + size - 5,
-        y = iconY + 7,
-        w = stroke,
-        h = size - 9,
-    }, color)
-    appendRect("trash-bottom", {
-        x = iconX + 5,
-        y = iconY + size - 3,
-        w = size - 10,
-        h = stroke,
-    }, color)
-    appendRect("trash-rib-left", {
-        x = iconX + math.floor(size * 0.42),
-        y = iconY + 9,
-        w = 1,
-        h = size - 13,
-    }, color)
-    appendRect("trash-rib-right", {
-        x = iconX + math.floor(size * 0.58),
-        y = iconY + 9,
-        w = 1,
-        h = size - 13,
-    }, color)
 
     table.insert(screenBar.regions, {
         kind = "trash",

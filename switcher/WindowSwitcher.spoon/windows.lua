@@ -74,12 +74,18 @@ local function recordFor(win, order, iconCache)
     local appName = app and call(app, "name") or "Unknown"
     local title = call(win, "title") or ""
     local id = call(win, "id") or tostring(win)
+    local key = app and appKey(app) or tostring(id)
 
     return {
         id = tostring(id),
+        key = key,
         window = win,
         app = app,
         appName = appName,
+        name = appName,
+        bundleID = app and call(app, "bundleID") or nil,
+        pid = app and call(app, "pid") or nil,
+        path = app and call(app, "path") or nil,
         title = title ~= "" and title or appName,
         icon = iconFor(app, iconCache),
         order = order,

@@ -14,44 +14,47 @@ The installer copies `hotkeys/init/hotkeys.lua` into `~/.hammerspoon/apps/hotkey
 
 ## Available hotkeys
 
-| Hotkey                 | Action                                  | Overrides native shortcut |
-| ---------------------- | --------------------------------------- | ------------------------- |
-| `cmd+shift+ctrl+R`     | Reload Hammerspoon config               | No                        |
-| `ctrl+shift+x`         | Launch or focus Ghostty                 | No                        |
-| `ctrl+c`               | Copy                                    | Yes                       |
-| `ctrl+x`               | Cut                                     | Yes                       |
-| `ctrl+v`               | Paste                                   | Yes                       |
-| `ctrl+shift+c`         | Copy in terminal apps                  | Yes                       |
-| `ctrl+shift+v`         | Paste in terminal apps                 | Yes                       |
-| `ctrl+a`               | Select all                              | Yes                       |
-| `ctrl+z`               | Undo                                    | Yes                       |
-| `ctrl+s`               | Save                                    | Yes                       |
-| `ctrl+f`               | Find                                    | Yes                       |
-| `ctrl+shift+f`         | Find in all files                       | Yes                       |
-| `ctrl+p`               | Print or app-specific `cmd+p` action    | Yes                       |
-| `ctrl+shift+p`         | App-specific `cmd+shift+p` action       | Yes                       |
-| `ctrl+,`               | App-specific `cmd+,` action             | Yes                       |
-| `ctrl+.`               | App-specific `cmd+.` action             | Yes                       |
-| `ctrl+-`               | Zoom out                                | Yes                       |
-| `ctrl+=`               | Zoom in                                 | Yes                       |
-| `ctrl+d`               | Send app-specific `cmd+d` action        | Yes                       |
-| `ctrl+shift+z`         | Redo                                    | Yes                       |
-| `ctrl+y`               | Send app-specific `cmd+y` action        | Yes                       |
-| `ctrl+t`               | New tab                                 | Yes                       |
-| `ctrl+shift+t`         | Reopen recently closed tab              | Yes                       |
-| `ctrl+w`               | Close current tab/window                | Yes                       |
-| `ctrl+left`            | Move back one word                      | Yes                       |
-| `ctrl+right`           | Move forward one word                   | Yes                       |
-| `ctrl+shift+left`      | Select back one word                    | Yes                       |
-| `ctrl+shift+right`     | Select forward one word                 | Yes                       |
-| `home`                 | Move to start of line                   | Yes                       |
-| `end`                  | Move to end of line                     | Yes                       |
-| `shift+home`           | Select to start of line                 | Yes                       |
-| `shift+end`            | Select to end of line                   | Yes                       |
-| `ctrl+home`            | Move to start of document/file          | Yes                       |
-| `ctrl+end`             | Move to end of document/file            | Yes                       |
-| `ctrl+shift+home`      | Select to start of document/file        | Yes                       |
-| `ctrl+shift+end`       | Select to end of document/file          | Yes                       |
+| Hotkey             | Action                               | Overrides native shortcut |
+| ------------------ | ------------------------------------ | ------------------------- |
+| `cmd+shift+ctrl+R` | Reload Hammerspoon config            | No                        |
+| `ctrl+shift+x`     | Launch or focus Ghostty              | No                        |
+| `ctrl+c`           | Copy                                 | Yes                       |
+| `ctrl+x`           | Cut                                  | Yes                       |
+| `ctrl+v`           | Paste                                | Yes                       |
+| `ctrl+shift+c`     | Copy in terminal apps                | Yes                       |
+| `ctrl+shift+v`     | Paste in terminal apps               | Yes                       |
+| `ctrl+a`           | Select all                           | Yes                       |
+| `ctrl+z`           | Undo                                 | Yes                       |
+| `ctrl+s`           | Save                                 | Yes                       |
+| `ctrl+f`           | Find                                 | Yes                       |
+| `ctrl+shift+f`     | Find in all files                    | Yes                       |
+| `ctrl+p`           | Print or app-specific `cmd+p` action | Yes                       |
+| `ctrl+shift+p`     | App-specific `cmd+shift+p` action    | Yes                       |
+| `ctrl+,`           | App-specific `cmd+,` action          | Yes                       |
+| `ctrl+.`           | App-specific `cmd+.` action          | Yes                       |
+| `ctrl+-`           | Zoom out                             | Yes                       |
+| `ctrl+=`           | Zoom in                              | Yes                       |
+| `ctrl+d`           | Send app-specific `cmd+d` action     | Yes                       |
+| `ctrl+shift+z`     | Redo                                 | Yes                       |
+| `ctrl+y`           | Send app-specific `cmd+y` action     | Yes                       |
+| `ctrl+t`           | New tab                              | Yes                       |
+| `ctrl+shift+t`     | Reopen recently closed tab           | Yes                       |
+| `ctrl+w`           | Close current tab/window             | Yes                       |
+| `ctrl+q`           | Quit current app                     | Yes                       |
+| `ctrl+left`        | Move back one word                   | Yes                       |
+| `ctrl+right`       | Move forward one word                | Yes                       |
+| `ctrl+shift+left`  | Select back one word                 | Yes                       |
+| `ctrl+shift+right` | Select forward one word              | Yes                       |
+| `ctrl+backspace`   | Delete previous word                 | Yes                       |
+| `delete`           | Move selected Finder item to Trash   | Yes                       |
+| `home`             | Move to start of line                | Yes                       |
+| `end`              | Move to end of line                  | Yes                       |
+| `shift+home`       | Select to start of line              | Yes                       |
+| `shift+end`        | Select to end of line                | Yes                       |
+| `ctrl+home`        | Select to start of line              | Yes                       |
+| `ctrl+end`         | Select to end of line                | Yes                       |
+| `ctrl+shift+home`  | Select to start of document/file     | Yes                       |
+| `ctrl+shift+end`   | Select to end of document/file       | Yes                       |
 
 ## Overridden hotkeys
 
@@ -63,11 +66,14 @@ The installer copies `hotkeys/init/hotkeys.lua` into `~/.hammerspoon/apps/hotkey
 - `ctrl+p` / `ctrl+shift+p` / `ctrl+,` / `ctrl+.`: replaces app and terminal-specific Control-key behavior with matching Command-key actions.
 - `ctrl+-` / `ctrl+=`: replaces app and terminal-specific Control-key behavior with Zoom Out and Zoom In.
 - `ctrl+d` / `ctrl+y`: replaces app-specific Control-key behavior with app-specific Command-key actions. In terminal apps, `ctrl+d` passes through unchanged.
-- `ctrl+t` / `ctrl+shift+t` / `ctrl+w`: replaces app and terminal-specific Control-key behavior with New Tab, Reopen Recently Closed Tab, and Close Tab/Window.
+- `ctrl+t` / `ctrl+shift+t` / `ctrl+w` / `ctrl+q`: replaces app and terminal-specific Control-key behavior with New Tab, Reopen Recently Closed Tab, Close Tab/Window, and Quit App.
 - `ctrl+left` / `ctrl+right`: replaces the macOS Mission Control default for switching Spaces when that shortcut is enabled in System Settings.
+- `ctrl+backspace`: replaces app-specific Control-key behavior with previous-word deletion.
+- `delete`: replaces Finder's normal Delete behavior with Move to Trash. Outside Finder, Delete passes through unchanged.
 - `home` / `end`: replaces the macOS default behavior used by many apps, which often scrolls to the top or bottom instead of moving within the current line.
 - `shift+home` / `shift+end`: replaces app-specific selection or scrolling behavior with line selection.
-- `ctrl+home` / `ctrl+end`: replaces app-specific behavior with document/file start and end navigation.
+- `ctrl+home` / `ctrl+end`: replaces app-specific behavior with selection to line start and end. In terminal apps, these pass through unchanged.
+- `ctrl+shift+home` / `ctrl+shift+end`: replaces app-specific behavior with selection to document/file start and end. In terminal apps, these pass through unchanged.
 
 ## Notes
 
@@ -92,22 +98,28 @@ The text navigation bindings use a Hammerspoon event tap so shortcuts such as `c
 | `ctrl+shift+z`            | `cmd+shift+z`             |
 | `ctrl+t/w`                | `cmd+t/w`                 |
 | `ctrl+shift+t`            | `cmd+shift+t`             |
+| `ctrl+q`                  | `cmd+q`                   |
 | `ctrl+left/right`         | `option+left/right`       |
 | `ctrl+shift+left/right`   | `option+shift+left/right` |
+| `ctrl+backspace`          | `option+backspace`        |
+| `delete` in Finder        | `cmd+delete`              |
 | `home` / `end`            | `cmd+left/right`          |
-| `ctrl+home/end`           | `cmd+up/down`             |
+| `ctrl+home/end`           | `cmd+shift+left/right`    |
+| `ctrl+shift+home/end`     | `cmd+shift+up/down`       |
 
 For common terminal emulators, command-line navigation uses shell-friendly events where possible:
 
-| Input                 | Terminal event sent |
-| --------------------- | ------------------- |
+| Input                          | Terminal event sent |
+| ------------------------------ | ------------------- |
 | `ctrl+a` / `ctrl+c` / `ctrl+v` | passed through      |
-| `ctrl+d`              | passed through      |
-| `ctrl+z`              | passed through      |
-| `ctrl+shift+c/v`      | `cmd+c/v`           |
-| `ctrl+left/right`     | `alt+b/f`           |
-| `home` / `end`        | `ctrl+a/e`          |
+| `ctrl+d`                       | passed through      |
+| `ctrl+z`                       | passed through      |
+| `ctrl+home/end`                | passed through      |
+| `ctrl+shift+home/end`          | passed through      |
+| `ctrl+shift+c/v`               | `cmd+c/v`           |
+| `ctrl+left/right`              | `alt+b/f`           |
+| `home` / `end`                 | `ctrl+a/e`          |
 
-Terminal selection behavior depends on the active terminal emulator and the shell/editor running inside it. `ctrl+shift+left/right` and the document/file start/end bindings still send the macOS navigation equivalents.
+Terminal selection behavior depends on the active terminal emulator and the shell/editor running inside it. The Home/End document selection bindings pass through unchanged in terminal apps.
 
 If `ctrl+left/right` still switches Spaces or does nothing, disable the matching Mission Control shortcuts in macOS System Settings under Keyboard Shortcuts.

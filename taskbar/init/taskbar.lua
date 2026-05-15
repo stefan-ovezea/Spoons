@@ -18,9 +18,9 @@ function M.start()
         accessibilityBadges = true, -- best-effort Dock accessibility scan
         accessibilityDebug = false, -- true logs Dock accessibility text samples
         notificationCenterObserver = true, -- watches new Notification Center banners
+        notificationCenterDebug = false, -- true logs full Notification Center AX payloads
         attentionCounter = true, -- in-memory count for notifications seen this session
         attentionDotSize = 16,
-        logLevel = "info",
         excludedApps = {
             ["org.hammerspoon.Hammerspoon"] = true,
             ["com.apple.dock"] = true,

@@ -55,11 +55,14 @@ spoon.Taskbar:configure({
     reserveScreenSpace = true,
     showClock = true,
     showTrash = true,
+    trashIconSize = 22,
+    trashIconYOffset = -2,
     trashDebug = false,
     clockFormat = "%a %d %b  %H:%M",
     accessibilityBadges = true, -- best-effort Dock accessibility scan
     accessibilityDebug = false, -- true logs Dock accessibility text samples
     notificationCenterObserver = true, -- watches new Notification Center banners
+    notificationCenterDebug = false, -- true logs full Notification Center AX payloads
     attentionCounter = true, -- in-memory count for notifications seen this session
     attentionDotSize = 12,
     runningIndicatorWidth = 14,
@@ -131,11 +134,11 @@ The bars are normal floating Hammerspoon canvases. Hammerspoon cannot change the
 
 Attention dots are discovered from Notification Center accessibility events and, as a fallback, by scanning the Dock accessibility tree when `accessibilityBadges` is enabled. This is best-effort because macOS and apps do not guarantee a stable accessibility representation for notification badges. Use `spoon.Taskbar:debugAttentionTexts()` from the Hammerspoon console to inspect what the Dock exposes.
 
-Pinned apps render on the left, unpinned running apps render on the right, and a separator appears between the groups. Open apps show a small bottom dot, the focused app shows a rounded bottom bar, and closed pinned apps show no indicator. Hovering an app grows the icon slightly without drawing a background. Clicking an app uses launch-or-focus behavior so hidden running apps are brought forward and pinned apps can be launched. Left-click and hold an icon, then drag horizontally inside the bar to reorder; icons snap into their new slots as you cross midpoint thresholds. Drag a running app to the left side to pin it; drag a pinned app to the right side to unpin it. Right-click an app for Pin/Unpin, Quit, and Force Quit. Pin and app order are persisted with `hs.settings` under `Taskbar.pinnedApps` and `Taskbar.appOrder` when `persistPinnedApps` is enabled, so Taskbar does not rewrite your `init.lua`.
+Pinned apps render on the left, unpinned running apps render on the right, and a separator appears between the groups. Open apps show a small bottom dot, the focused app shows a rounded bottom bar, and closed pinned apps show no indicator. Hovering an app grows the icon slightly without drawing a background. Clicking an app uses launch-or-focus behavior so hidden running apps are brought forward and pinned apps can be launched. Left-click and hold an icon, then drag horizontally inside the bar to reorder; icons snap into their new slots as you cross midpoint thresholds. Drag a running app to the left side to pin it; drag a pinned app to the right side to unpin it. Right-click an app for Pin/Unpin, Quit, and Force Quit. Right-click empty Taskbar space for Taskbar actions, including opening Activity Monitor as Task Manager. Pin and app order are persisted with `hs.settings` under `Taskbar.pinnedApps` and `Taskbar.appOrder` when `persistPinnedApps` is enabled, so Taskbar does not rewrite your `init.lua`.
 
-The clock and Trash live on the right side of the bar. Left-click Trash to open `~/.Trash`; right-click it for an Open/Empty menu. The Trash icon is checked periodically using `hs.fs` across standard Trash folders plus the Dock accessibility label when available, and changes appearance when visible trash items exist.
+The clock and Trash live on the right side of the bar. Left-click Trash to open `~/.Trash`; right-click it for an Open/Empty menu. The Trash icon uses bundled empty/full image assets and is checked periodically using `hs.fs`, with an explicit `~/.Trash` check before other standard Trash folders. If macOS privacy permissions block direct Trash reads, Taskbar asks Finder for the Trash item count before falling back to Dock accessibility.
 
-Set `accessibilityDebug = true`, `notificationCenterDebug = true`, and `logLevel = "debug"` to log Dock accessibility samples, Notification Center events, and matches to the Hammerspoon console.
+Set `notificationCenterDebug = true` and `logLevel = "debug"` to log full Notification Center AX payloads when notifications are observed. Set `accessibilityDebug = true` only when you also need verbose Dock accessibility samples.
 
 If live events do not appear, open Notification Center manually and inspect:
 
